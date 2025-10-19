@@ -168,10 +168,9 @@
     <!-- ======================================================= -->
     <script src="https://www.youtube.com/iframe_api"></script>
     <script>
-        // NOTE: The JavaScript logic remains unchanged as requested.
-        // It will work perfectly with the new structure and IDs.
         document.addEventListener('DOMContentLoaded', () => {
-            const SECRET_CODE_FOR_LOGIN = "SAIFQW";
+            // --- NEW: Updated secret code ---
+            const SECRET_CODE_FOR_LOGIN = "SASAIF";
             const YOUTUBE_API_KEY = "AIzaSyA4gfRf5sGQZ-a7ficcTcgU47aJV30cSgc";
             
             const accessLockOverlay = document.getElementById('access-lock-overlay');
@@ -180,9 +179,11 @@
             const mainPlatform = document.getElementById('main-platform');
 
             // --- Login Logic ---
-            if (localStorage.getItem('isLoggedIn') === 'true') {
+            // NEW: Check for a 'loginToken' that matches the current secret code.
+            // This invalidates any old logins.
+            if (localStorage.getItem('loginToken') === SECRET_CODE_FOR_LOGIN) {
                 accessLockOverlay.style.display = 'none';
-                mainPlatform.style.display = 'block'; // Changed from flex
+                mainPlatform.style.display = 'block';
                 document.body.style.backgroundColor = 'var(--bg-color)';
                 initializeApp();
             }
@@ -190,11 +191,12 @@
             loginForm.addEventListener('submit', (e) => {
                 e.preventDefault();
                 if (secretCodeInput.value.trim().toUpperCase() === SECRET_CODE_FOR_LOGIN) {
-                    localStorage.setItem('isLoggedIn', 'true');
+                    // NEW: Set the 'loginToken' with the current secret code.
+                    localStorage.setItem('loginToken', SECRET_CODE_FOR_LOGIN);
                     accessLockOverlay.classList.add('opacity-0');
                     setTimeout(() => {
                         accessLockOverlay.style.display = 'none';
-                        mainPlatform.style.display = 'block'; // Changed from flex
+                        mainPlatform.style.display = 'block';
                         document.body.style.backgroundColor = 'var(--bg-color)';
                         initializeApp();
                     }, 700);
@@ -203,12 +205,13 @@
                     setTimeout(() => secretCodeInput.classList.remove('border-red-500', 'animate-shake'), 500);
                 }
             });
+
             // Add a small animation for incorrect password
             const style = document.createElement('style');
             style.innerHTML = `@keyframes shake { 0%, 100% { transform: translateX(0); } 10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); } 20%, 40%, 60%, 80% { transform: translateX(10px); } } .animate-shake { animation: shake 0.5s ease-in-out; }`;
             document.head.appendChild(style);
 
-            // --- Main App Initialization ---
+            // --- Main App Initialization (No changes below this line) ---
             function initializeApp() {
                 const playerWrapper = document.getElementById('player-wrapper');
                 const customControls = document.getElementById('custom-controls-overlay');
@@ -378,4 +381,3 @@
     </script>
 </body>
 </html>
-
