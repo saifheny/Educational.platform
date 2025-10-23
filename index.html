@@ -3,381 +3,434 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة دروسي التعليمية</title>
+    <title>منصة دروسي - النسخة النهائية الكاملة</title>
     
-    <!-- Tailwind CSS for modern styling -->
     <script src="https://cdn.tailwindcss.com"></script>
-
-    <!-- Google Fonts: Cairo -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
-    <!-- Font Awesome for icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <style>
-        /* --- Custom CSS & Variables --- */
         :root {
-            --primary-color: #4361ee;
-            --primary-light: #4895ef;
-            --primary-dark: #3a0ca3;
-            --bg-color: #f1f3f5;
-            --surface-color: #ffffff;
-            --text-color: #2b2d42;
-            --text-light: #8d99ae;
-            --border-color: #dee2e6;
-            --whatsapp-color: #25D366;
+            --primary-color: #4f46e5;
             --font-family: 'Cairo', sans-serif;
         }
-
-        body {
-            font-family: var(--font-family);
-            -webkit-tap-highlight-color: transparent; /* Removes blue highlight on tap for mobile */
+        body { 
+            font-family: var(--font-family); 
+            background-image: url('https://i.postimg.cc/XvfW383N/download-37.jpg');
+            background-size: cover;
+            background-position: center center;
+            background-attachment: fixed;
+            -webkit-tap-highlight-color: transparent;
         }
-        
-        /* Apply font to Tailwind elements */
-        .font-cairo {
-            font-family: var(--font-family);
+        .element-3d {
+            background-color: white;
+            border: 2px solid #4b5563;
+            position: relative;
+            transition: transform 0.15s ease-out, box-shadow 0.15s ease-out;
+            cursor: pointer;
         }
-        
-        /* Custom styles for YouTube player controls that are dynamically updated via JS */
-        #progress-bar-fill {
-            background-color: var(--primary-light);
-            transition: width 0.1s linear;
+        .element-3d.btn-style { box-shadow: 0 5px 0 0 #4b5563; }
+        .element-3d.card-style { box-shadow: 0 8px 0 0 #6b7280; }
+        .element-3d:hover { transform: translateY(-4px); }
+        .element-3d.btn-style:hover { box-shadow: 0 9px 0 0 #374151; }
+        .element-3d.card-style:hover { box-shadow: 0 12px 0 0 #4b5563; }
+        .element-3d:active { transform: translateY(1px); }
+        .element-3d.btn-style:active { box-shadow: 0 2px 0 0 #374151; }
+        .element-3d.card-style:active { box-shadow: 0 4px 0 0 #4b5563; }
+        .content-panel {
+            background-color: rgba(241, 245, 249, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
         }
-
-        /* Style for the range input (volume slider) */
-        #volume-slider {
-            accent-color: var(--primary-light);
-        }
-        
-        /* The JS adds this class, so we need to keep it for the controls visibility logic */
-        #custom-controls-overlay.visible {
-            opacity: 1;
-            visibility: visible;
+        #progress-bar-fill { background-color: var(--primary-color); }
+        #volume-slider { accent-color: var(--primary-color); }
+        #time-display { direction: ltr; }
+        #content-list { padding-bottom: 1rem; }
+        .scrolling-wrapper { -ms-overflow-style: none; scrollbar-width: none; }
+        .scrolling-wrapper::-webkit-scrollbar { display: none; }
+        #dynamic-header-area {
+            background-color: rgba(241, 245, 249, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
         }
     </style>
 </head>
-<body class="bg-gray-100 antialiased">
+<body class="antialiased bg-slate-200">
     
-    <!-- ======================================================= -->
-    <!-- ============== ACCESS LOCK OVERLAY ==================== -->
-    <!-- ======================================================= -->
-    <div id="access-lock-overlay" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900 transition-opacity duration-700 ease-out">
-        <div class="absolute inset-0 bg-cover bg-center opacity-10" style="background-image: url('https://placehold.co/1920x1080/0a0a14/FFFFFF?text=.')"></div>
-        <div class="w-full max-w-md text-center bg-gray-800/40 backdrop-blur-2xl rounded-3xl p-8 shadow-2xl shadow-blue-500/10 border border-gray-700/60">
-            <div class="card-content">
-                <h2 class="text-4xl font-bold text-white mb-3">بوابة الدخول</h2>
-                <p class="text-gray-300 mb-8">أدخل رمز الوصول الخاص بك للمتابعة.</p>
-                <form id="login-form" class="space-y-6">
-                    <input type="text" id="secret-code-input" placeholder="******" maxlength="6" required class="w-full px-4 py-3 text-2xl tracking-[1.5rem] text-center bg-gray-900/50 border-2 border-gray-600 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/50 transition-all duration-300">
-                    <button type="submit" class="w-full bg-blue-600 text-white font-bold py-3 px-6 rounded-xl hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-400/50 transform hover:scale-105 transition-all duration-300 shadow-lg shadow-blue-600/20">
-                        التحقق والدخول
-                    </button>
-                </form>
-                <div id="support-contact" class="mt-8">
-                    <p class="text-gray-400 mb-3">ليس لديك رمز؟</p>
-                    <a href="https://wa.me/201202687082" target="_blank" class="inline-flex items-center gap-3 px-6 py-3 bg-green-500 text-white font-semibold rounded-full hover:bg-green-600 focus:outline-none focus:ring-4 focus:ring-green-400/50 transform hover:scale-105 transition-all duration-300 shadow-lg shadow-green-500/20">
-                        <i class="fab fa-whatsapp text-xl"></i>
-                        <span>تواصل عبر واتساب</span>
-                    </a>
-                </div>
+    <!-- ACCESS LOCK OVERLAY -->
+    <div id="access-lock-overlay" class="fixed inset-0 z-50 flex items-center justify-center p-4"><div class="w-full max-w-md text-center content-panel rounded-3xl p-8"><h2 class="text-4xl font-bold text-slate-900 mb-3">بوابة الدخول</h2><p class="text-slate-600 mb-8">أدخل رمز الوصول.</p><form id="login-form" class="space-y-6"><input type="text" id="secret-code-input" placeholder="● ● ● ● ● ●" maxlength="6" required class="w-full px-4 py-3 text-2xl tracking-[1.5rem] text-center bg-white border-2 border-gray-600 rounded-xl"><button type="submit" class="w-full element-3d btn-style bg-indigo-600 text-white font-bold py-3 px-6 rounded-xl">التحقق</button></form><div class="mt-8"><p class="text-gray-700 mb-3">ليس لديك رمز؟</p><a href="https://wa.me/201202687082" target="_blank" class="inline-flex items-center gap-3 px-6 py-3 element-3d btn-style bg-green-500 text-white font-semibold rounded-full"><i class="fab fa-whatsapp text-xl"></i> <span>واتساب</span></a></div></div></div>
+    
+    <!-- GRADE SELECTION OVERLAY -->
+    <div id="grade-selection-overlay" class="fixed inset-0 z-40 items-start justify-center p-4 hidden overflow-y-auto bg-slate-900/30 backdrop-blur-sm">
+        <div class="w-full max-w-4xl text-center my-8">
+            <div class="pt-16 sm:pt-24">
+                 <h1 class="text-6xl font-extrabold text-white mb-4" style="text-shadow: 0 4px 8px rgba(0,0,0,0.4);"><i class="fas fa-graduation-cap"></i></h1>
+                 <h2 class="text-4xl font-extrabold text-white mb-2" style="text-shadow: 0 2px 6px rgba(0,0,0,0.4);">دروسي</h2>
+                 <p class="text-slate-200 mb-12">اختر مرحلتك التعليمية للبدء</p>
+            </div>
+            <div id="grade-options" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
+            <div id="second-secondary-options" class="hidden mt-6">
+                <h3 class="text-xl font-bold text-white mb-4" style="text-shadow: 0 2px 4px rgba(0,0,0,0.3);">اختر تخصصك</h3>
+                <div id="second-sec-buttons" class="flex justify-center gap-4"></div>
             </div>
         </div>
     </div>
 
-    <!-- ======================================================= -->
-    <!-- ================ MAIN PLATFORM ======================== -->
-    <!-- ======================================================= -->
-    <main id="main-platform" class="hidden text-gray-800">
-        
-        <!-- Header (Mobile Only) -->
-        <header class="app-header bg-white shadow-md p-4 flex justify-between items-center sticky top-0 z-30 lg:hidden">
-            <div class="logo flex items-center gap-3 text-xl font-extrabold text-blue-600">
-                <i class="fas fa-graduation-cap"></i>
-                <span>دروسي</span>
-            </div>
-        </header>
-
-        <!-- Wrapper for Desktop Layout (flex-row-reverse for RTL) -->
+    <!-- MAIN PLATFORM -->
+    <main id="main-platform" class="hidden text-slate-800">
         <div class="lg:flex lg:flex-row-reverse lg:h-screen">
-            
-            <!-- ===== VIDEO DISPLAY AREA (Left on Desktop) ===== -->
-            <div class="video-display-area w-full bg-black lg:flex-grow">
-                 <div id="player-wrapper" class="w-full h-full relative group aspect-video lg:aspect-auto">
-                    <!-- Player Placeholder -->
-                    <div id="player-placeholder" class="w-full h-full flex flex-col justify-center items-center text-gray-500 text-center p-4">
-                        <i class="fas fa-play-circle text-6xl mb-4 text-blue-400/50"></i>
-                        <p class="font-semibold">اختر فيديو من القائمة لبدء المشاهدة</p>
-                    </div>
-                    
-                    <!-- YouTube Player Div -->
-                    <div id="youtube-player" class="w-full h-full"></div>
-                    
-                    <!-- Custom Player Controls -->
-                    <div id="custom-controls-overlay" class="absolute bottom-0 inset-x-0 z-10 p-4 flex flex-col gap-2 bg-gradient-to-t from-black/80 to-transparent opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity duration-300">
-                        <!-- Progress Bar -->
-                        <div id="progress-bar-container" class="w-full h-1.5 bg-white/20 cursor-pointer rounded-full">
-                            <div id="progress-bar-fill" class="h-full rounded-full w-0"></div>
+            <!-- VIDEO DISPLAY AREA -->
+            <div class="video-display-area w-full bg-black lg:flex-grow lg:sticky lg:top-0 lg:h-screen"><div id="player-wrapper" class="w-full h-full relative group aspect-video lg:aspect-auto"><div id="player-placeholder" class="w-full h-full flex flex-col justify-center items-center text-center p-4 bg-slate-900"><i class="fas fa-play-circle text-6xl mb-4 text-indigo-400/50"></i><p class="font-semibold text-slate-300">اختر فيديو لبدء المشاهدة</p></div><div id="youtube-player" class="w-full h-full"></div><div class="absolute top-0 inset-x-0 h-28 bg-gradient-to-b from-black/60 to-transparent pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity z-10"><h1 class="text-2xl font-extrabold text-white p-4 opacity-70"><i class="fas fa-graduation-cap"></i> دروسي</h1></div><div id="custom-controls-overlay" class="absolute bottom-0 inset-x-0 z-10 p-2 sm:p-4 flex flex-col gap-2 bg-gradient-to-t from-black/80 to-transparent opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity"><div id="progress-bar-container" class="w-full h-1.5 hover:h-2.5 bg-white/20 cursor-pointer rounded-full"><div id="progress-bar-fill" class="h-full rounded-full w-0"></div></div><div class="controls-bottom-row flex items-center gap-2 sm:gap-4 text-white"><button id="play-pause-btn" class="text-2xl w-8 h-8 flex shrink-0 items-center justify-center hover:text-indigo-400"><i class="fas fa-play"></i></button><div class="flex items-center gap-2"><button id="mute-btn" class="text-xl w-8 h-8 flex shrink-0 items-center justify-center hover:text-indigo-400"><i class="fas fa-volume-up"></i></button><input type="range" id="volume-slider" min="0" max="100" value="100" class="w-16 sm:w-20 h-1 cursor-pointer"></div><div id="time-display" class="text-sm font-mono tracking-tighter">00:00/00:00</div><div class="flex-grow"></div><button id="fullscreen-btn" class="text-xl w-8 h-8 flex shrink-0 items-center justify-center hover:text-indigo-400"><i class="fas fa-expand"></i></button></div></div></div></div>
+
+            <!-- CONTENT AREA -->
+            <div class="w-full lg:w-[400px] lg:flex-shrink-0 lg:h-screen lg:overflow-y-auto">
+                <div class="content-panel min-h-full">
+                    <div class="pt-8 pb-4 text-center"><h1 class="text-4xl font-extrabold text-indigo-600"><i class="fas fa-graduation-cap"></i> دروسي</h1><p class="text-slate-600 text-sm mt-1">منصتك التعليمية الأولى</p></div>
+                    <div class="px-4 pb-4"><form id="search-form" class="element-3d btn-style relative flex items-center bg-white rounded-full p-1"><input type="search" id="search-bar" placeholder="ابحث..." class="flex-grow pl-4 pr-10 py-2 bg-transparent border-0 rounded-full focus:outline-none focus:ring-0 text-slate-800"><button type="submit" class="absolute inset-y-0 left-0 flex items-center justify-center w-12 text-slate-400 hover:text-indigo-600 rounded-full"><i class="fas fa-magnifying-glass"></i></button></form></div>
+                    <div class="h-6 lg:hidden"></div>
+                    <div id="dynamic-header-area" class="sticky top-0 z-20 p-4 space-y-4 border-y border-white/20">
+                        <div id="main-view-header" class="hidden">
+                            <div id="grade-header" class="items-center gap-4 bg-white/50 rounded-2xl shadow-sm border border-slate-200 p-4"></div>
+                            <div id="category-filters" class="scrolling-wrapper flex items-center gap-3 overflow-x-auto pt-2 pb-2"></div>
                         </div>
-                        <!-- Controls Row -->
-                        <div class="controls-bottom-row flex items-center gap-4 text-white">
-                            <button id="play-pause-btn" class="control-button text-2xl w-8 h-8 flex items-center justify-center hover:text-blue-400 transition-colors"><i class="fas fa-play"></i></button>
-                            <div class="volume-container flex items-center gap-2">
-                                <button id="mute-btn" class="control-button text-xl w-8 h-8 flex items-center justify-center hover:text-blue-400 transition-colors"><i class="fas fa-volume-up"></i></button>
-                                <input type="range" id="volume-slider" min="0" max="100" value="100" class="w-20 h-1 cursor-pointer">
-                            </div>
-                            <div id="time-display" class="time-display text-sm font-mono tracking-tighter">00:00 / 00:00</div>
-                            <div class="spacer flex-grow"></div>
-                            <button id="fullscreen-btn" class="control-button text-xl w-8 h-8 flex items-center justify-center hover:text-blue-400 transition-colors"><i class="fas fa-expand"></i></button>
+                        <div id="sub-view-header" class="hidden items-center">
+                            <button id="back-btn" class="element-3d btn-style rounded-full w-10 h-10 flex items-center justify-center bg-white text-slate-700 ml-3"><i class="fas fa-arrow-left"></i></button>
+                            <h2 id="view-title" class="font-bold text-lg text-slate-800 truncate"></h2>
                         </div>
                     </div>
+                    <div id="content-list" class="p-4 space-y-4"></div>
                 </div>
             </div>
-
-            <!-- ====== CONTENT (Right on Desktop) ====== -->
-            <div class="w-full bg-gray-100 lg:w-[400px] lg:flex-shrink-0 lg:border-r lg:border-gray-200 lg:overflow-y-auto">
-                <!-- Content Container (Scrollable) -->
-                <div class="content-container p-4 space-y-6">
-                    <!-- Search Form -->
-                    <form id="search-form" class="relative">
-                        <input type="search" id="search-bar" placeholder="ابحث عن درس..." class="w-full pl-12 pr-4 py-3 bg-white border-2 border-gray-200 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition">
-                        <button type="submit" class="absolute inset-y-0 left-0 flex items-center justify-center w-12 text-gray-400 hover:text-blue-600">
-                            <i class="fas fa-search"></i>
-                        </button>
-                    </form>
-
-                    <!-- Category Filters -->
-                    <div id="category-filters" class="flex flex-wrap gap-2">
-                        <!-- Filters will be rendered here by JS -->
-                    </div>
-
-                    <!-- Video List -->
-                    <div id="video-list" class="video-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4">
-                        <!-- Video cards will be rendered here by JS -->
-                    </div>
-                </div>
-            </div>
-
         </div>
     </main>
 
-    <!-- ======================================================= -->
-    <!-- ================== JAVASCRIPT ========================= -->
-    <!-- ======================================================= -->
     <script src="https://www.youtube.com/iframe_api"></script>
+    
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // --- NEW: Updated secret code ---
-            const SECRET_CODE_FOR_LOGIN = "SASAIF";
-            const YOUTUBE_API_KEY = "AIzaSyA4gfRf5sGQZ-a7ficcTcgU47aJV30cSgc";
-            
-            const accessLockOverlay = document.getElementById('access-lock-overlay');
-            const loginForm = document.getElementById('login-form');
-            const secretCodeInput = document.getElementById('secret-code-input');
-            const mainPlatform = document.getElementById('main-platform');
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- CONSTANTS AND GLOBAL VARIABLES ---
+        const SECRET_CODE_FOR_LOGIN = "SASAIF";
+        const YOUTUBE_API_KEY = "AIzaSyA4gfRf5sGQZ-a7ficcTcgU47aJV30cSgc";
+        let player, progressInterval;
+        let currentSubjectQuery, currentSubjectName;
 
-            // --- Login Logic ---
-            // NEW: Check for a 'loginToken' that matches the current secret code.
-            // This invalidates any old logins.
-            if (localStorage.getItem('loginToken') === SECRET_CODE_FOR_LOGIN) {
-                accessLockOverlay.style.display = 'none';
-                mainPlatform.style.display = 'block';
-                document.body.style.backgroundColor = 'var(--bg-color)';
-                initializeApp();
+        const appData = {
+            grades: {
+                prep_1: { name: "أولى إعدادي", emoji: '1️⃣', color: 'bg-green-400', subjects: [ { n: 'عربي', q: 'شرح لغة عربية' }, { n: 'علوم', q: 'شرح علوم' }, { n: 'رياضة', q: 'شرح رياضيات' }, { n: 'إنجليزي', q: 'شرح لغة انجليزية' }, { n: 'دراسات', q: 'شرح دراسات اجتماعية' } ] },
+                prep_2: { name: "ثانية إعدادي", emoji: '2️⃣', color: 'bg-sky-400', subjects: [ { n: 'عربي', q: 'شرح لغة عربية' }, { n: 'علوم', q: 'شرح علوم' }, { n: 'رياضة', q: 'شرح رياضيات' }, { n: 'إنجليزي', q: 'شرح لغة انجليزية' }, { n: 'دراسات', q: 'شرح دراسات اجتماعية' } ] },
+                prep_3: { name: "ثالثة إعدادي", emoji: '3️⃣', color: 'bg-purple-400', subjects: [ { n: 'عربي', q: 'شرح لغة عربية' }, { n: 'علوم', q: 'شرح علوم' }, { n: 'رياضة', q: 'شرح رياضيات' }, { n: 'إنجليزي', q: 'شرح لغة انجليزية' }, { n: 'دراسات', q: 'شرح دراسات اجتماعية' } ] },
+                sec_1: { name: "أولى ثانوي", emoji: '🎓', color: 'bg-red-400', subjects: [ { n: 'عربي', q: 'شرح اللغة العربية' }, { n: 'علوم متكاملة', q: 'شرح علوم متكاملة' }, { n: 'إنجليزي', q: 'شرح اللغة الانجليزية' }, { n: 'رياضة', q: 'شرح رياضيات' } ] },
+                sec_2_sci: { name: "ثانية ثانوي - علمي", emoji: '🔬', subjects: [ { n: 'عربي', q: 'شرح لغة عربية' }, { n: 'فيزياء', q: 'شرح فيزياء' }, { n: 'كيمياء', q: 'شرح كيمياء' }, { n: 'رياضة', q: 'شرح رياضيات' }, { n: 'إنجليزي', q: 'شرح لغة انجليزية' } ] },
+                sec_2_lit: { name: "ثانية ثانوي - أدبي", emoji: '🏛️', subjects: [ { n: 'عربي', q: 'شرح لغة عربية' }, { n: 'تاريخ', q: 'شرح تاريخ' }, { n: 'جغرافيا', q: 'شرح جغرافيا' }, { n: 'إنجليزي', q: 'شرح لغة انجليزية' }, { n: 'فلسفة وعلم نفس', q: 'شرح فلسفة وعلم نفس' } ] }
+            },
+            currentUser: { gradeId: null, gradeData: null }
+        };
+
+        // --- DOM ELEMENT SELECTORS ---
+        const accessLockOverlay = document.getElementById('access-lock-overlay');
+        const loginForm = document.getElementById('login-form');
+        const gradeSelectionOverlay = document.getElementById('grade-selection-overlay');
+        const mainPlatform = document.getElementById('main-platform');
+        const contentList = document.getElementById('content-list');
+        const mainViewHeader = document.getElementById('main-view-header');
+        const subViewHeader = document.getElementById('sub-view-header');
+        const backBtn = document.getElementById('back-btn');
+        const categoryFiltersDiv = document.getElementById('category-filters');
+        const playerWrapper = document.getElementById('player-wrapper');
+        const playPauseBtn = document.getElementById('play-pause-btn');
+        const muteBtn = document.getElementById('mute-btn');
+        const volumeSlider = document.getElementById('volume-slider');
+        const fullscreenBtn = document.getElementById('fullscreen-btn');
+        const progressBarFill = document.getElementById('progress-bar-fill');
+        const progressBarContainer = document.getElementById('progress-bar-container');
+        const timeDisplay = document.getElementById('time-display');
+
+        // --- AUTH & GRADE SELECTION ---
+        function checkGradeSelection() {
+            const savedGrade = localStorage.getItem('userGrade');
+            if (savedGrade && appData.grades[savedGrade]) startAppForGrade(savedGrade);
+            else displayGradeSelection();
+        }
+
+        function displayGradeSelection() {
+            gradeSelectionOverlay.style.display = 'flex';
+            const gradeOptionsContainer = document.getElementById('grade-options');
+            const secondSecOptions = document.getElementById('second-secondary-options');
+            const secondSecButtons = document.getElementById('second-sec-buttons');
+            gradeOptionsContainer.innerHTML = ''; secondSecButtons.innerHTML = '';
+            const mainGrades = [ { id: 'prep_1' }, { id: 'prep_2' }, { id: 'prep_3' }, { id: 'sec_1' }, { id: 'sec_2' } ];
+            mainGrades.forEach(g => {
+                const btn = document.createElement('button');
+                btn.className = 'element-3d card-style p-5 font-bold rounded-2xl flex flex-col items-center gap-3 text-slate-800';
+                if (g.id === 'sec_2') {
+                    btn.innerHTML = `<span class="text-4xl">✌️</span><span>ثانية ثانوي</span>`;
+                    btn.classList.add('bg-amber-300');
+                    btn.addEventListener('click', () => { gradeOptionsContainer.classList.add('hidden'); secondSecOptions.classList.remove('hidden'); });
+                } else {
+                    const d = appData.grades[g.id];
+                    btn.dataset.grade = g.id; btn.innerHTML = `<span class="text-4xl">${d.emoji}</span><span>${d.name}</span>`;
+                    btn.classList.add(d.color); btn.addEventListener('click', () => startAppForGrade(g.id));
+                }
+                gradeOptionsContainer.appendChild(btn);
+            });
+            const sec2_choices = [ { id: 'sec_2_sci', name: 'علمي', emoji: '🔬', color: 'bg-sky-300' }, { id: 'sec_2_lit', name: 'أدبي', emoji: '🏛️', color: 'bg-orange-300' } ];
+            sec2_choices.forEach(choice => {
+                const btn = document.createElement('button');
+                btn.className = 'element-3d card-style text-lg w-full sm:w-48 text-slate-800 flex flex-col items-center gap-3 p-5 font-bold rounded-2xl';
+                btn.dataset.grade = choice.id; btn.classList.add(choice.color);
+                btn.innerHTML = `<span class="text-3xl">${choice.emoji}</span><span>${choice.name}</span>`;
+                btn.addEventListener('click', () => startAppForGrade(choice.id));
+                secondSecButtons.appendChild(btn);
+            });
+        }
+
+        function startAppForGrade(gradeId) {
+            localStorage.setItem('userGrade', gradeId);
+            appData.currentUser = { gradeId: gradeId, gradeData: appData.grades[gradeId] };
+            gradeSelectionOverlay.classList.add('opacity-0');
+            setTimeout(() => { 
+                gradeSelectionOverlay.style.display = 'none'; 
+                mainPlatform.classList.remove('hidden');
+                initializeApp(); 
+            }, 500);
+        }
+
+        // --- MAIN APP LOGIC ---
+        function initializeApp() {
+            const gradeHeader = document.getElementById('grade-header');
+            const searchForm = document.getElementById('search-form');
+            const categories = appData.currentUser.gradeData.subjects;
+
+            gradeHeader.innerHTML = `<h2 class="font-extrabold text-lg text-slate-800">${appData.currentUser.gradeData.name}</h2><button id="change-grade-btn" class="text-xs text-slate-600 hover:text-indigo-600 font-semibold mr-auto">تغيير</button>`;
+            gradeHeader.classList.remove('hidden'); gradeHeader.classList.add('flex');
+            document.getElementById('change-grade-btn').addEventListener('click', () => { localStorage.removeItem('userGrade'); window.location.reload(); });
+
+            function switchView(viewName, title = '') {
+                contentList.innerHTML = '';
+                if (viewName === 'main') {
+                    mainViewHeader.style.display = 'block';
+                    subViewHeader.style.display = 'none';
+                } else { // 'sub-view' for results or playlist items
+                    mainViewHeader.style.display = 'none';
+                    subViewHeader.style.display = 'flex';
+                    document.getElementById('view-title').textContent = title;
+                }
             }
 
-            loginForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                if (secretCodeInput.value.trim().toUpperCase() === SECRET_CODE_FOR_LOGIN) {
-                    // NEW: Set the 'loginToken' with the current secret code.
-                    localStorage.setItem('loginToken', SECRET_CODE_FOR_LOGIN);
-                    accessLockOverlay.classList.add('opacity-0');
-                    setTimeout(() => {
-                        accessLockOverlay.style.display = 'none';
-                        mainPlatform.style.display = 'block';
-                        document.body.style.backgroundColor = 'var(--bg-color)';
-                        initializeApp();
-                    }, 700);
+            function renderCategoryFilters() {
+                categoryFiltersDiv.innerHTML = ''; 
+                categories.forEach((cat) => {
+                    const btn = document.createElement('button');
+                    btn.className = 'category-filter element-3d btn-style shrink-0 px-4 py-2 rounded-full text-sm font-semibold text-slate-700';
+                    btn.textContent = cat.n;
+                    btn.addEventListener('click', () => {
+                        currentSubjectQuery = cat.q;
+                        currentSubjectName = cat.n;
+                        fetchFromYouTube('video');
+                    });
+                    categoryFiltersDiv.appendChild(btn);
+                });
+            }
+            
+            function createToggle(currentType) {
+                const toggleContainer = document.createElement('div');
+                toggleContainer.className = "flex justify-center p-2 mb-4";
+                const isVideo = currentType === 'video';
+                
+                toggleContainer.innerHTML = `
+                    <div class="element-3d btn-style flex items-center bg-white rounded-full p-1 text-sm font-semibold">
+                        <button class="toggle-btn w-28 py-2 rounded-full ${isVideo ? 'bg-indigo-600 text-white' : 'text-slate-600'}" data-type="video">
+                            <i class="fas fa-video mr-2"></i>الفيديوهات
+                        </button>
+                        <button class="toggle-btn w-28 py-2 rounded-full ${!isVideo ? 'bg-indigo-600 text-white' : 'text-slate-600'}" data-type="playlist">
+                             <i class="fas fa-list-ul mr-2"></i>القوائم
+                        </button>
+                    </div>
+                `;
+
+                toggleContainer.querySelectorAll('.toggle-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const type = e.currentTarget.dataset.type;
+                        if(type !== currentType) {
+                            fetchFromYouTube(type);
+                        }
+                    });
+                });
+
+                return toggleContainer;
+            }
+
+            async function fetchFromYouTube(type, queryOverride = null) {
+                const isPlaylistItems = type === 'playlistItems';
+                const searchType = isPlaylistItems ? 'playlistItems' : (type === 'playlist' ? 'playlist' : 'video');
+                const query = queryOverride || currentSubjectQuery;
+                const title = `مادة: ${currentSubjectName}`;
+                
+                switchView('sub-view', title);
+                contentList.innerHTML = '<p class="text-center p-4">جاري التحميل...</p>';
+
+                const gradeName = appData.currentUser.gradeData.name.replace(/ - .*/, '');
+                const fullQuery = `${query} للصف ${gradeName}`;
+                
+                let apiUrl;
+                if(isPlaylistItems) {
+                    apiUrl = `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${queryOverride}&maxResults=50&key=${YOUTUBE_API_KEY}`;
                 } else {
-                    secretCodeInput.classList.add('border-red-500', 'animate-shake');
-                    setTimeout(() => secretCodeInput.classList.remove('border-red-500', 'animate-shake'), 500);
+                    apiUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(fullQuery)}&type=${searchType}&maxResults=20&key=${YOUTUBE_API_KEY}`;
+                }
+
+                try {
+                    const res = await fetch(apiUrl);
+                    if (!res.ok) throw new Error(`فشل في جلب البيانات`);
+                    const data = await res.json();
+                    contentList.innerHTML = '';
+
+                    if (!isPlaylistItems) {
+                        contentList.appendChild(createToggle(type));
+                    }
+                    
+                    if (data.items && data.items.length > 0) {
+                        if (type === 'playlist') data.items.forEach(item => contentList.appendChild(createPlaylistCard(item)));
+                        else if (type === 'video') data.items.forEach(item => contentList.appendChild(createSearchVideoCard(item)));
+                        else if (isPlaylistItems) data.items.forEach(item => contentList.appendChild(createPlaylistItemCard(item)));
+                    } else { 
+                        contentList.innerHTML += '<p class="text-center p-4 text-slate-600">لم يتم العثور على نتائج.</p>'; 
+                    }
+                } catch (err) { 
+                    contentList.innerHTML = `<p class="text-center p-4 text-red-600">حدث خطأ: ${err.message}</p>`; 
+                }
+            }
+
+            function createPlaylistCard(item) {
+                const card = document.createElement("div");
+                card.className = "element-3d card-style bg-white rounded-xl overflow-hidden";
+                const thumbnailUrl = item.snippet.thumbnails.high?.url || item.snippet.thumbnails.medium.url;
+                card.innerHTML = `<img src="${thumbnailUrl}" class="aspect-video w-full object-cover"><div class="p-4"><h3 class="font-bold text-sm text-slate-800 leading-tight line-clamp-2">${item.snippet.title}</h3></div>`;
+                card.addEventListener('click', () => fetchFromYouTube('playlistItems', item.id.playlistId));
+                return card;
+            }
+
+            function createSearchVideoCard(item) {
+                const card = document.createElement("div");
+                card.className = "element-3d card-style bg-white rounded-xl overflow-hidden";
+                const thumbnailUrl = item.snippet.thumbnails.high?.url || item.snippet.thumbnails.medium.url;
+                card.innerHTML = `<img src="${thumbnailUrl}" class="aspect-video w-full object-cover"><div class="p-4"><h3 class="font-bold text-sm text-slate-800 leading-tight line-clamp-2">${item.snippet.title}</h3></div>`;
+                card.addEventListener("click", () => { createPlayer(item.id.videoId); playerWrapper.scrollIntoView({ behavior: 'smooth' }); });
+                return card;
+            }
+
+            function createPlaylistItemCard(item) {
+                const card = document.createElement("div");
+                const thumbnailUrl = item.snippet.thumbnails?.high?.url || item.snippet.thumbnails?.medium?.url || 'https://i.ytimg.com/vi/default.jpg';
+                card.className = "element-3d card-style bg-white rounded-xl overflow-hidden flex items-center gap-4 p-2";
+                card.innerHTML = `<img src="${thumbnailUrl}" class="aspect-video w-28 object-cover rounded-lg"><h3 class="font-bold text-sm text-slate-800 leading-tight line-clamp-2 flex-grow">${item.snippet.title}</h3>`;
+                card.addEventListener("click", () => { createPlayer(item.snippet.resourceId.videoId); playerWrapper.scrollIntoView({ behavior: 'smooth' }); });
+                return card;
+            }
+            
+            backBtn.addEventListener('click', () => switchView('main'));
+
+            searchForm.addEventListener('submit', (e) => {
+                e.preventDefault(); 
+                const query = document.getElementById('search-bar').value.trim();
+                if (query) {
+                    currentSubjectQuery = query;
+                    currentSubjectName = `نتائج البحث عن: "${query}"`;
+                    fetchFromYouTube('video');
                 }
             });
 
-            // Add a small animation for incorrect password
-            const style = document.createElement('style');
-            style.innerHTML = `@keyframes shake { 0%, 100% { transform: translateX(0); } 10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); } 20%, 40%, 60%, 80% { transform: translateX(10px); } } .animate-shake { animation: shake 0.5s ease-in-out; }`;
-            document.head.appendChild(style);
-
-            // --- Main App Initialization (No changes below this line) ---
-            function initializeApp() {
-                const playerWrapper = document.getElementById('player-wrapper');
-                const customControls = document.getElementById('custom-controls-overlay');
-                const playPauseBtn = document.getElementById('play-pause-btn');
-                const progressBarContainer = document.getElementById('progress-bar-container');
-                const progressBarFill = document.getElementById('progress-bar-fill');
-                const timeDisplay = document.getElementById('time-display');
-                const volumeSlider = document.getElementById('volume-slider');
-                const muteBtn = document.getElementById('mute-btn');
-                const fullscreenBtn = document.getElementById('fullscreen-btn');
-                
-                let player, progressInterval, controlsTimeout;
-
-                window.onYouTubeIframeAPIReady = () => {};
-
-                window.createPlayer = function(videoId) {
-                    document.getElementById('player-placeholder').style.display = 'none';
-                    if (player) {
-                        player.loadVideoById(videoId);
-                    } else {
-                        player = new YT.Player('youtube-player', {
-                            videoId: videoId,
-                            playerVars: { 'autoplay': 1, 'controls': 0, 'rel': 0, 'showinfo': 0, 'iv_load_policy': 3, 'modestbranding': 1 },
-                            events: { 'onReady': onPlayerReady, 'onStateChange': onPlayerStateChange }
-                        });
-                    }
-                };
-                
-                function onPlayerReady(event) { event.target.playVideo(); }
-
-                function onPlayerStateChange(event) {
-                    updatePlayPauseIcon(event.data);
-                    if (event.data === YT.PlayerState.PLAYING) {
-                        progressInterval = setInterval(updateProgressBar, 250);
-                    } else {
-                        clearInterval(progressInterval);
-                    }
-                }
-                
-                const updatePlayPauseIcon = (state) => playPauseBtn.querySelector('i').className = (state === YT.PlayerState.PLAYING) ? 'fas fa-pause' : 'fas fa-play';
-                const togglePlay = () => player && player.getPlayerState() === YT.PlayerState.PLAYING ? player.pauseVideo() : player.playVideo();
-                const formatTime = (s) => `${Math.floor(s/60).toString().padStart(2,'0')}:${Math.floor(s%60).toString().padStart(2,'0')}`;
-                
-                function updateProgressBar() {
-                    if (!player || !player.getCurrentTime) return;
-                    const percent = (player.getCurrentTime() / player.getDuration()) * 100;
-                    progressBarFill.style.width = `${percent}%`;
-                    timeDisplay.textContent = `${formatTime(player.getCurrentTime())} / ${formatTime(player.getDuration())}`;
-                }
-
-                function seek(e) {
-                    if (!player || !player.getDuration) return;
-                    const rect = progressBarContainer.getBoundingClientRect();
-                    const newTime = player.getDuration() * ((e.clientX - rect.left) / rect.width);
-                    player.seekTo(newTime, true);
-                }
-
-                function handleVolumeChange() { if(player) player.setVolume(volumeSlider.value); updateVolumeIcon(volumeSlider.value); }
-                function updateVolumeIcon(vol) {
-                    const icon = muteBtn.querySelector('i');
-                    if (vol == 0 || (player && player.isMuted())) icon.className = 'fas fa-volume-xmark';
-                    else if (vol < 50) icon.className = 'fas fa-volume-low';
-                    else icon.className = 'fas fa-volume-up';
-                }
-                function toggleMute() { if(player) { player.isMuted() ? player.unMute() : player.mute(); setTimeout(() => updateVolumeIcon(player.getVolume()), 100); } }
-                function toggleFullscreen() { if (!document.fullscreenElement) playerWrapper.requestFullscreen(); else document.exitFullscreen(); }
-                
-                playPauseBtn.addEventListener('click', togglePlay);
-                progressBarContainer.addEventListener('click', seek);
-                volumeSlider.addEventListener('input', handleVolumeChange);
-                muteBtn.addEventListener('click', toggleMute);
-                fullscreenBtn.addEventListener('click', toggleFullscreen);
-
-                playerWrapper.addEventListener('mousemove', () => {
-                    customControls.classList.add('visible');
-                    clearTimeout(controlsTimeout);
-                    controlsTimeout = setTimeout(() => customControls.classList.remove('visible'), 3000);
-                });
-                playerWrapper.addEventListener('mouseleave', () => clearTimeout(controlsTimeout));
-
-                // --- Content Fetching & Rendering ---
-                const videoListDiv = document.getElementById('video-list');
-                const categoryFiltersDiv = document.getElementById('category-filters');
-                const searchForm = document.getElementById('search-form');
-
-                const categories = [ { name: 'علوم متكاملة', query: 'شرح علوم متكاملة اولى ثانوي' }, { name: 'عربي', query: 'شرح اللغة العربية اولى ثانوي' }, { name: 'إنجليزي', query: 'شرح اللغة الانجليزية اولى ثانوي' }, { name: 'رياضة', query: 'شرح رياضيات اولى ثانوي' }, { name: 'فلسفة', query: 'شرح فلسفة اولى ثانوي' }, { name: 'تاريخ', query: 'شرح تاريخ اولى ثانوي' }, ];
-
-                function renderCategoryFilters() {
-                    categoryFiltersDiv.innerHTML = '';
-                    categories.forEach((cat, index) => {
-                        const btn = document.createElement('button');
-                        btn.className = 'category-filter px-4 py-2 rounded-full text-sm font-semibold border-2 border-gray-200 bg-white hover:bg-gray-200 transition-colors';
-                        btn.textContent = cat.name;
-                        if (index === 0) {
-                            btn.classList.add('active', 'bg-blue-600', 'text-white', 'border-blue-600');
-                            btn.classList.remove('bg-white', 'hover:bg-gray-200');
-                        }
-                        btn.addEventListener('click', () => {
-                            document.querySelectorAll('.category-filter').forEach(b => {
-                                b.classList.remove('active', 'bg-blue-600', 'text-white', 'border-blue-600');
-                                b.classList.add('bg-white', 'hover:bg-gray-200');
-                            });
-                            btn.classList.add('active', 'bg-blue-600', 'text-white', 'border-blue-600');
-                            btn.classList.remove('bg-white', 'hover:bg-gray-200');
-                            fetchVideosFromYouTube(cat.query);
-                        });
-                        categoryFiltersDiv.appendChild(btn);
-                    });
-                }
-
-                async function fetchVideosFromYouTube(query) {
-                    videoListDiv.innerHTML = `<p class="text-center text-gray-500 col-span-full">...جاري البحث عن الدروس</p>`;
-                    try {
-                        const res = await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(query)}&type=video&maxResults=25&key=${YOUTUBE_API_KEY}`);
-                        if (!res.ok) throw new Error(`API Error: ${res.statusText}`);
-                        const data = await res.json();
-                        videoListDiv.innerHTML = '';
-                        if (data.items && data.items.length > 0) {
-                            data.items.forEach(item => videoListDiv.appendChild(createVideoCard(item.id.videoId, item.snippet.title, item.snippet.thumbnails.high.url)));
-                        } else {
-                            videoListDiv.innerHTML = '<p class="text-center text-gray-500 col-span-full">لا توجد نتائج لهذا البحث.</p>';
-                        }
-                    } catch (err) {
-                        console.error("YouTube API Fetch Error:", err);
-                        videoListDiv.innerHTML = '<p class="text-center text-red-500 col-span-full">حدث خطأ أثناء جلب الفيديوهات. قد تكون مشكلة في مفتاح API.</p>';
-                    }
-                }
-
-                function createVideoCard(videoId, title, thumbnail) {
-                    const card = document.createElement("div");
-                    card.className = "bg-white rounded-xl shadow-md overflow-hidden cursor-pointer transition transform hover:-translate-y-1 hover:shadow-lg";
-                    card.innerHTML = `
-                        <div class="relative">
-                            <img src="${thumbnail}" class="aspect-video w-full object-cover" alt="${title}" loading="lazy">
-                            <div class="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
-                                <i class="fas fa-play-circle text-white text-5xl"></i>
-                            </div>
-                        </div>
-                        <div class="p-4">
-                            <h3 class="font-bold text-gray-800 leading-tight truncate">${title}</h3>
-                        </div>`;
-                    card.addEventListener("click", () => {
-                        window.createPlayer(videoId);
-                        if (window.innerWidth <= 1024) { // 1024 is lg breakpoint
-                            document.querySelector('.video-display-area').scrollIntoView({ behavior: 'smooth' });
-                        }
-                    });
-                    return card;
-                }
-                
-                searchForm.addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    const query = document.getElementById('search-bar').value.trim();
-                    if (query) {
-                        fetchVideosFromYouTube(query);
-                        document.querySelectorAll('.category-filter').forEach(b => {
-                            b.classList.remove('active', 'bg-blue-600', 'text-white', 'border-blue-600');
-                            b.classList.add('bg-white', 'hover:bg-gray-200');
-                        });
-                    }
-                });
-
-                renderCategoryFilters();
-                fetchVideosFromYouTube(categories[0].query);
+            renderCategoryFilters();
+            
+            // --- AUTO-LOAD FIRST SUBJECT ---
+            if (categories && categories.length > 0) {
+                const firstCategory = categories[0];
+                currentSubjectQuery = firstCategory.q;
+                currentSubjectName = firstCategory.n;
+                fetchFromYouTube('video');
+            } else {
+                switchView('main'); // Fallback for grades with no subjects
             }
-        });
+        }
+
+        // --- YOUTUBE PLAYER API & CONTROLS ---
+        function createPlayer(videoId) {
+            document.getElementById('player-placeholder').style.display = 'none';
+            if (player) player.loadVideoById(videoId);
+            else {
+                player = new YT.Player('youtube-player', {
+                    videoId: videoId,
+                    playerVars: { 'autoplay': 1, 'controls': 0, 'rel': 0, 'modestbranding': 1, 'iv_load_policy': 3 },
+                    events: { 'onReady': onPlayerReady, 'onStateChange': onPlayerStateChange }
+                });
+            }
+        }
+
+        function onPlayerReady(event) { event.target.playVideo(); }
+
+        function onPlayerStateChange(event) {
+            const playIcon = playPauseBtn.querySelector('i');
+            clearInterval(progressInterval);
+            if (event.data === YT.PlayerState.PLAYING) {
+                playIcon.className = 'fas fa-pause';
+                progressInterval = setInterval(updatePlayerProgress, 250);
+            } else {
+                playIcon.className = 'fas fa-play';
+            }
+            updateVolumeUI();
+        }
+
+        function updatePlayerProgress() {
+            if (player && player.getDuration()) {
+                progressBarFill.style.width = `${(player.getCurrentTime() / player.getDuration()) * 100}%`;
+                timeDisplay.textContent = `${formatTime(player.getCurrentTime())} / ${formatTime(player.getDuration())}`;
+            }
+        }
+
+        function formatTime(seconds) {
+            if (isNaN(seconds)) return '00:00';
+            const m = Math.floor(seconds / 60), s = Math.floor(seconds % 60);
+            return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+        }
+
+        function updateVolumeUI() {
+            if (!player) return;
+            const muteIcon = muteBtn.querySelector('i');
+            if (player.isMuted() || player.getVolume() === 0) {
+                muteIcon.className = 'fas fa-volume-xmark';
+                volumeSlider.value = 0;
+            } else {
+                muteIcon.className = 'fas fa-volume-high';
+                volumeSlider.value = player.getVolume();
+            }
+        }
+
+        playPauseBtn.addEventListener('click', () => { if (player) player.getPlayerState() === YT.PlayerState.PLAYING ? player.pauseVideo() : player.playVideo(); });
+        muteBtn.addEventListener('click', () => { if (player) player.isMuted() ? player.unMute() : player.mute(); });
+        volumeSlider.addEventListener('input', (e) => { if (player) { player.setVolume(e.target.value); if(player.isMuted()) player.unMute(); } });
+        progressBarContainer.addEventListener('click', (e) => { if (player && player.getDuration()) { const r = progressBarContainer.getBoundingClientRect(); player.seekTo(((e.clientX - r.left) / r.width) * player.getDuration()); } });
+        fullscreenBtn.addEventListener('click', () => { if (!document.fullscreenElement) playerWrapper.requestFullscreen(); else document.exitFullscreen(); });
+        document.addEventListener('fullscreenchange', () => { fullscreenBtn.querySelector('i').className = `fas fa-${document.fullscreenElement ? 'compress' : 'expand'}`; });
+
+        // --- INITIALIZATION ---
+        const loginHandler = (e) => {
+            e.preventDefault();
+            if (document.getElementById('secret-code-input').value.trim().toUpperCase() === SECRET_CODE_FOR_LOGIN) {
+                localStorage.setItem('loginToken', SECRET_CODE_FOR_LOGIN);
+                accessLockOverlay.classList.add('opacity-0');
+                setTimeout(() => { accessLockOverlay.style.display = 'none'; checkGradeSelection(); }, 700);
+            }
+        };
+        loginForm.addEventListener('submit', loginHandler);
+        if (localStorage.getItem('loginToken') === SECRET_CODE_FOR_LOGIN) {
+            accessLockOverlay.style.display = 'none';
+            checkGradeSelection();
+        }
+    });
     </script>
 </body>
 </html>
