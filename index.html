@@ -7,7 +7,7 @@
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
@@ -59,26 +59,21 @@
             color: white; font-size: 1.5rem; font-weight: bold; cursor: pointer; position: relative;
             border-radius: 8px; 
             text-shadow: 1px 1px 2px rgba(0,0,0,0.5); 
-            /* تأثير الظل المحسن لإعطاء عمق 3D */
             box-shadow: 0 6px 0 0 rgba(0,0,0,0.25);
-            /* حركة انتقالية سلسة للضغط */
             transition: transform 0.15s ease-out, box-shadow 0.15s ease-out, filter 0.15s ease-out;
         }
         .grade-btn:hover { 
-            /* رفع الزر للأعلى عند المرور فوقه */
             transform: translateY(-5px); 
             box-shadow: 0 11px 0 0 rgba(0,0,0,0.25);
             filter: brightness(1.1); 
         }
         .grade-btn:active {
-            /* غمس الزر للأسفل عند الضغط */
             transform: translateY(1px);
             box-shadow: 0 2px 0 0 rgba(0,0,0,0.25);
             filter: brightness(0.95);
         }
         .grade-btn .number {
             font-size: 4.5rem; font-weight: 900; position: absolute; 
-            /* تعديل موقع الرقم ليكون أقرب للداخل */
             left: -15px;
             top: 50%; transform: translateY(-50%); z-index: 2; text-shadow: -4px 4px 0px rgba(0,0,0,0.25);
         }
@@ -104,9 +99,8 @@
 </head>
 <body class="antialiased text-slate-800">
     
-    <!-- شاشة الدخول (بدون حاوية) -->
+    <!-- شاشة الدخول -->
     <div id="access-lock-screen" class="fixed inset-0 z-50 flex items-center justify-center p-4">
-        <!-- المحتوى هنا -->
         <div class="w-full max-w-md text-center">
             <h2 class="text-5xl md:text-6xl font-extrabold text-white mb-4">بوابة الدخول</h2>
             <p class="text-slate-200 text-lg mb-8">أدخل رمز الوصول للمتابعة.</p>
@@ -117,14 +111,13 @@
             <div class="mt-8">
                 <p class="text-slate-200 mb-3">ليس لديك رمز؟ تواصل معنا</p>
                 <a href="https://wa.me/201202687082" target="_blank" class="inline-flex items-center gap-3 px-6 py-3 element-3d btn-style bg-green-500 text-white font-semibold rounded-full">
-                    <i class="fab fa-whatsapp text-xl"></i> 
-                    <span>اطلب رمزك عبر واتساب</span>
+                    <i class="fab fa-whatsapp text-xl"></i> <span>اطلب رمزك عبر واتساب</span>
                 </a>
             </div>
         </div>
     </div>
     
-    <!-- شاشة اختيار الصفوف (مع تعديل المساحات) -->
+    <!-- شاشة اختيار الصفوف -->
     <div id="grade-selection-screen" class="fixed inset-0 z-40 justify-center p-4 hidden overflow-y-auto pt-24 pb-24">
         <div class="w-full max-w-2xl text-center my-auto">
             <div id="grade-selection-header" class="mb-12">
@@ -133,7 +126,6 @@
                  <p class="text-slate-200 text-lg">اختر صفك الدراسي للبدء</p>
             </div>
             <div id="grade-options" class="flex flex-col gap-10"></div>
-            <!-- حاوية اختيار التخصص (مخفية) -->
             <div id="specialization-options" class="hidden mt-6">
                 <h3 class="text-2xl font-bold text-white mb-6" style="text-shadow: 0 2px 4px rgba(0,0,0,0.3);">اختر تخصصك</h3>
                 <div id="specialization-buttons" class="flex justify-center gap-6"></div>
@@ -143,17 +135,37 @@
 
     <!-- المنصة الرئيسية -->
     <main id="main-platform" class="hidden text-slate-800">
-        <!-- باقي هيكل المنصة -->
         <div class="lg:flex lg:flex-row-reverse lg:h-screen">
             <!-- منطقة عرض الفيديو -->
-            <div class="video-display-area w-full bg-black lg:flex-grow lg:sticky lg:top-0 lg:h-screen"><div id="player-wrapper" class="w-full h-full relative group aspect-video lg:aspect-auto"><div id="player-placeholder" class="w-full h-full flex flex-col justify-center items-center text-center p-4 bg-slate-900"><i class="fas fa-play-circle text-6xl mb-4 text-indigo-400/50"></i><p class="font-semibold text-slate-300">اختر فيديو لبدء المشاهدة</p></div><div id="youtube-player" class="w-full h-full"></div><div class="absolute top-0 inset-x-0 h-28 bg-gradient-to-b from-black/60 to-transparent pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity z-10"><h1 class="text-2xl font-extrabold text-white p-4 opacity-70"><i class="fas fa-graduation-cap"></i> دروسي</h1></div><div id="custom-controls-overlay" class="absolute bottom-0 inset-x-0 z-10 p-2 sm:p-4 flex flex-col gap-2 bg-gradient-to-t from-black/80 to-transparent opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity"><div id="progress-bar-container" class="w-full h-1.5 hover:h-2.5 bg-white/20 cursor-pointer rounded-full"><div id="progress-bar-fill" class="h-full rounded-full w-0 bg-indigo-500"></div></div><div class="controls-bottom-row flex items-center gap-2 sm:gap-4 text-white"><button id="play-pause-btn" class="text-2xl w-8 h-8 flex shrink-0 items-center justify-center hover:text-indigo-400"><i class="fas fa-play"></i></button><div class="flex items-center gap-2"><button id="mute-btn" class="text-xl w-8 h-8 flex shrink-0 items-center justify-center hover:text-indigo-400"><i class="fas fa-volume-up"></i></button><input type="range" id="volume-slider" min="0" max="100" value="100" class="w-16 sm:w-20 h-1 cursor-pointer"></div><div id="time-display" class="text-sm font-mono tracking-tighter" style="direction: ltr;">00:00/00:00</div><div class="flex-grow"></div><button id="fullscreen-btn" class="text-xl w-8 h-8 flex shrink-0 items-center justify-center hover:text-indigo-400"><i class="fas fa-expand"></i></button></div></div></div></div>
+            <div class="video-display-area w-full bg-black lg:flex-grow lg:sticky lg:top-0 lg:h-screen">
+                <div id="player-wrapper" class="w-full h-full relative aspect-video lg:aspect-auto">
+                    <div id="player-placeholder" class="w-full h-full flex flex-col justify-center items-center text-center p-4 bg-slate-900 z-10">
+                        <i class="fas fa-play-circle text-6xl mb-4 text-indigo-400/50"></i>
+                        <p class="font-semibold text-slate-300">اختر فيديو لبدء المشاهدة</p>
+                    </div>
+                    <div id="youtube-player" class="w-full h-full"></div>
+                    <!-- الحاجز الشفاف لمنع النقر على المشغل الأصلي -->
+                    <div id="click-blocker-overlay" class="absolute inset-0 z-20"></div>
+                    
+                    <div id="custom-controls-overlay" class="absolute bottom-0 inset-x-0 z-30 p-2 sm:p-4 flex-col gap-2 bg-gradient-to-t from-black/80 to-transparent hidden">
+                        <div id="progress-bar-container" class="w-full h-1.5 hover:h-2.5 bg-white/20 cursor-pointer rounded-full"><div id="progress-bar-fill" class="h-full rounded-full w-0 bg-indigo-500"></div></div>
+                        <div class="controls-bottom-row flex items-center gap-2 sm:gap-4 text-white">
+                            <button id="play-pause-btn" class="text-2xl w-8 h-8 flex shrink-0 items-center justify-center hover:text-indigo-400"><i class="fas fa-play"></i></button>
+                            <div class="flex items-center gap-2"><button id="mute-btn" class="text-xl w-8 h-8 flex shrink-0 items-center justify-center hover:text-indigo-400"><i class="fas fa-volume-up"></i></button><input type="range" id="volume-slider" min="0" max="100" value="100" class="w-16 sm:w-20 h-1 cursor-pointer"></div>
+                            <div id="time-display" class="text-sm font-mono tracking-tighter" style="direction: ltr;">00:00/00:00</div>
+                            <div class="flex-grow"></div>
+                            <button id="fullscreen-btn" class="text-xl w-8 h-8 flex shrink-0 items-center justify-center hover:text-indigo-400"><i class="fas fa-expand"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <!-- منطقة المحتوى -->
             <div class="w-full lg:w-[400px] lg:flex-shrink-0 lg:h-screen lg:overflow-y-auto">
                 <div class="content-panel min-h-full">
                     <div id="dynamic-header-area" class="sticky top-0 z-20 p-4 space-y-4 border-b border-slate-200/50">
                         <div id="main-view-header" class="hidden">
-                            <div id="grade-header" class="items-center gap-4 bg-white/50 rounded-2xl shadow-sm border border-slate-200 p-4"></div>
+                            <div id="grade-header" class="items-center gap-3 bg-white/50 rounded-2xl shadow-sm border border-slate-200 p-4"></div>
                             <div id="category-filters" class="scrolling-wrapper flex items-center gap-3 overflow-x-auto pt-2 pb-2"></div>
                         </div>
                         <div id="sub-view-header" class="hidden items-center">
@@ -183,7 +195,7 @@
         let player, progressInterval;
         let currentSubjectQuery, currentSubjectName;
 
-        const appData = {
+        const appData = { /* ... نفس بيانات الصفوف والمواد ... */ 
             grades: {
                 prep_1: { name: "الصف الأول الإعدادي", subjects: [ { n: 'عربي', q: 'شرح لغة عربية' }, { n: 'علوم', q: 'شرح علوم' }, { n: 'رياضة', q: 'شرح رياضيات' }, { n: 'إنجليزي', q: 'شرح لغة انجليزية' }, { n: 'دراسات', q: 'شرح دراسات اجتماعية' } ] },
                 prep_2: { name: "الصف الثاني الإعدادي", subjects: [ { n: 'عربي', q: 'شرح لغة عربية' }, { n: 'علوم', q: 'شرح علوم' }, { n: 'رياضة', q: 'شرح رياضيات' }, { n: 'إنجليزي', q: 'شرح لغة انجليزية' }, { n: 'دراسات', q: 'شرح دراسات اجتماعية' } ] },
@@ -214,6 +226,7 @@
             backBtn: document.getElementById('back-btn'),
             categoryFiltersDiv: document.getElementById('category-filters'),
             playerWrapper: document.getElementById('player-wrapper'),
+            customControlsOverlay: document.getElementById('custom-controls-overlay'),
             playPauseBtn: document.getElementById('play-pause-btn'),
             muteBtn: document.getElementById('mute-btn'),
             volumeSlider: document.getElementById('volume-slider'),
@@ -232,7 +245,7 @@
             if (screen === allDOMElements.gradeSelectionScreen) screen.classList.add('flex');
         }
 
-        function displayGradeSelection() {
+        function displayGradeSelection() { /* ... نفس الكود السابق ... */ 
             showScreen(allDOMElements.gradeSelectionScreen);
             const gradeOptionsContainer = document.getElementById('grade-options');
             const specializationOptions = document.getElementById('specialization-options');
@@ -256,7 +269,7 @@
             });
         }
         
-        function promptSpecialization() {
+        function promptSpecialization() { /* ... نفس الكود السابق ... */ 
             document.getElementById('grade-options').classList.add('hidden');
             document.getElementById('grade-selection-header').classList.add('hidden');
             const specializationOptions = document.getElementById('specialization-options');
@@ -289,14 +302,25 @@
         function initializeApp() {
             const gradeHeader = document.getElementById('grade-header');
 
-            gradeHeader.innerHTML = `<h2 class="font-extrabold text-lg text-slate-800">${appData.currentUser.gradeData.name}</h2><button id="change-grade-btn" class="text-xs text-slate-600 hover:text-indigo-600 font-semibold mr-auto">تغيير</button>`;
+            gradeHeader.innerHTML = `
+                <h2 class="font-extrabold text-lg text-slate-800 flex-grow">${appData.currentUser.gradeData.name}</h2>
+                <button id="change-grade-btn" class="text-xs text-slate-600 hover:text-indigo-600 font-semibold">تغيير</button>
+                <button id="logout-btn" class="text-xs text-red-600 hover:text-red-800 font-semibold mr-3"><i class="fas fa-sign-out-alt ml-1"></i>خروج</button>
+            `;
             gradeHeader.classList.remove('hidden'); gradeHeader.classList.add('flex');
+            
+            // ربط الأحداث بالأزرار الجديدة
             document.getElementById('change-grade-btn').addEventListener('click', () => { 
                 localStorage.removeItem('userGrade');
                 displayGradeSelection(); 
             });
+            document.getElementById('logout-btn').addEventListener('click', () => {
+                localStorage.removeItem('loginToken');
+                localStorage.removeItem('userGrade');
+                window.location.reload();
+            });
 
-            function switchView(viewName, title = '') {
+            function switchView(viewName, title = '') { /* ... نفس الكود السابق ... */ 
                 allDOMElements.contentList.innerHTML = '';
                 if (viewName === 'main') {
                     allDOMElements.mainViewHeader.style.display = 'block';
@@ -309,7 +333,7 @@
                 }
             }
 
-            function renderCategoryFilters() {
+            function renderCategoryFilters() { /* ... نفس الكود السابق ... */ 
                 const categories = appData.currentUser.gradeData.subjects;
                 allDOMElements.categoryFiltersDiv.innerHTML = ''; 
                 categories.forEach((cat) => {
@@ -325,7 +349,7 @@
                 });
             }
             
-            function createToggle(currentType) {
+            function createToggle(currentType) { /* ... نفس الكود السابق ... */ 
                 const toggleContainer = document.createElement('div');
                 toggleContainer.className = "flex justify-center p-2 mb-4";
                 const isVideo = currentType === 'video';
@@ -339,7 +363,7 @@
                 return toggleContainer;
             }
 
-            async function fetchFromYouTube(type, queryOverride = null) {
+            async function fetchFromYouTube(type, queryOverride = null) { /* ... نفس الكود السابق ... */
                 const isPlaylistItems = type === 'playlistItems';
                 const searchType = isPlaylistItems ? 'playlistItems' : (type === 'playlist' ? 'playlist' : 'video');
                 const query = queryOverride || currentSubjectQuery;
@@ -370,9 +394,9 @@
                         else if (isPlaylistItems) data.items.forEach(item => allDOMElements.contentList.appendChild(createCard(item, 'playlistItem')));
                     } else { allDOMElements.contentList.innerHTML += '<p class="text-center p-4 text-slate-600">لم يتم العثور على نتائج.</p>'; }
                 } catch (err) { allDOMElements.contentList.innerHTML = `<p class="text-center p-4 text-red-600">حدث خطأ: ${err.message}</p>`; }
-            }
+             }
 
-            function createCard(item, type) {
+            function createCard(item, type) { /* ... نفس الكود السابق ... */ 
                 const card = document.createElement("div");
                 card.className = "element-3d btn-style bg-white rounded-xl overflow-hidden";
                 let videoId, playlistId, title, thumbnailUrl;
@@ -403,6 +427,10 @@
 
         function createPlayer(videoId) {
             document.getElementById('player-placeholder').style.display = 'none';
+            // إظهار أزرار التحكم المخصصة بمجرد طلب فيديو
+            allDOMElements.customControlsOverlay.classList.remove('hidden');
+            allDOMElements.customControlsOverlay.classList.add('flex');
+
             if (player) { player.loadVideoById(videoId); }
             else { player = new YT.Player('youtube-player', { videoId: videoId, playerVars: { 'autoplay': 1, 'controls': 0, 'rel': 0, 'modestbranding': 1, 'iv_load_policy': 3 }, events: { 'onReady': onPlayerReady, 'onStateChange': onPlayerStateChange } }); }
         }
