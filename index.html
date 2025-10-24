@@ -7,7 +7,7 @@
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
@@ -22,11 +22,20 @@
         body { 
             font-family: var(--font-family); 
             background-color: #111827; /* Fallback color */
-            background-image: url('https://i.postimg.cc/XvfW383N/download-37.jpg');
+            /* --- خلفية الهواتف والأجهزة اللوحية (الشاشات الصغيرة) --- */
+            background-image: url('https://i.postimg.cc/PxsVTM7W/download-40.jpg');
             background-size: cover;
             background-position: center center;
             background-attachment: fixed;
             -webkit-tap-highlight-color: transparent;
+        }
+
+        /* --- Media Query لتغيير الخلفية على الشاشات الكبيرة --- */
+        @media (min-width: 1024px) {
+            body {
+                /* --- خلفية أجهزة الكمبيوتر واللاب توب (الشاشات الكبيرة) --- */
+                background-image: url('https://i.postimg.cc/JnVYMQFj/download-41.jpg');
+            }
         }
 
         /* --- شاشة الدخول (بدون حاوية) --- */
